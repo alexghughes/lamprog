@@ -1,0 +1,189 @@
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 30px;
+  background-color: #f0f0f0;
+}
+
+.container, .backdrop, textarea {
+  width: 460px;
+  height: 180px;
+}
+
+.highlights, textarea {
+  padding: 10px;
+  font: 20px/28px 'Open Sans', sans-serif;
+  letter-spacing: 1px;
+}
+
+.container {
+  display: block;
+  margin: 0 auto;
+  border-radius: 5;
+  transform: translateZ(0);
+  -webkit-text-size-adjust: none;
+}
+
+.backdrop {
+  position: absolute;
+  z-index: 1;
+  width: 150%;
+  height: 300%;
+  -webkit-border-radius: 8px;
+  -moz-border-radius:8px;
+  border-radius: 8px;
+  border: 2px solid #685972;
+  background-color: #fff;
+  text-align: justify;
+  overflow: auto;
+  pointer-events: none;
+  border-radius: 5;
+
+  margin-left: -10%;
+
+
+}
+
+.highlights {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    color: transparent;
+}
+
+textarea {
+
+  display: block;
+  width: 150%;
+  height: 300%;
+  position: absolute;
+  z-index: 2;
+  border: 2px solid #74637f;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -ms-overflow-style: none;
+  border-radius: 4px;
+  color: #444;
+  text-align: justify;
+  background-color: transparent;
+
+  margin-left: -10%;
+  overflow: hidden;
+  resize: none;
+
+
+}
+
+
+textarea:focus, button:focus {
+  outline: none;
+
+}
+
+.column {
+    float: left;
+    padding: 10px;
+    height: 300px; /* Should be removed. Only for demonstration */
+}
+
+.left {
+  width: 20%;
+
+  margin-top: 4%;
+  margin-left: 5%;
+  margin-right: 5%;
+  position: relative;
+  overflow: auto;
+}
+
+
+
+.right {
+  width: 50%;
+  margin: 2%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Clear floats after the columns */
+.column-left {
+
+}
+
+#toggle {
+    width: auto;
+    height: auto;
+    background: #99ccff;
+     border-radius: 3%;
+    display: none;
+  }
+
+  .simple-notification-wrapper{
+            margin-top: 500px !important;
+        }
+
+
+  /*.ng-tns-c4-0 {
+    height: 40px !important;
+    padding-top: 50% !important;
+  }*/
+
+
+  .tooltiptext {
+
+   width: 120px;
+   background-color: black;
+   color: #fff;
+   text-align: center;
+   padding: 5px 0;
+   border-radius: 6px;
+
+   /* Position the tooltip text - see examples below! */
+   position: absolute;
+   z-index: 1;
+}
+
+#append {
+  display: none;
+  position: absolute;
+  background: black;
+  width: 100px;
+  height: 40px;
+  border-radius: 4px;
+  color: white;
+  opacity: 0.7;
+  text-align: center;
+/*
+  animation-name: example;
+   animation-duration: 1s; */
+
+}
+
+
+@keyframes example {
+    from {height: 0px; width: 0px; font-size: 0 }
+    to {height: 40px; width: 100px; font-size: 11}
+}
+
+
+#append:after {
+    border-top: 10px solid black;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    bottom: 0px;
+    content: "";
+    position: absolute;
+    left: 50%;
+    margin-bottom: -7px;
+    margin-left: -21px;
+    width: 0;
+    height: 0;
+    opacity: 0.8;
+}

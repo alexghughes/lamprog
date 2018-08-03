@@ -1,0 +1,12 @@
+<div class="container">
+
+  <div class="backdrop">
+    <my-fader [isVisible]="isVisible">
+      <div [innerHTML]="highlightText" class="highlights"></div>
+    </my-fader>
+  </div>
+
+  <textarea spellcheck="false" id="txtarea" (keydown)="onKeydown($event)" [(ngModel)]="text" (ngModelChange)="sendMessage($)" class="user-input"></textarea>
+</div>
+
+<div id="append" [style.top.px]="top" [style.left.px]="left" [style.display]="display"><pre>Why?</pre></div>
