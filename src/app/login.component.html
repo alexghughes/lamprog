@@ -1,0 +1,23 @@
+<form name="form" (ngSubmit)="login()" [formGroup]="myForm" #f="ngForm" novalidate>
+  <div class="form-group">
+
+<div class="form-container">
+
+        <mat-form-field appearance="outline" >
+            <input matInput color="primary" placeholder="username" [(ngModel)]="model.username" formControlName="username" required>
+        </mat-form-field>
+
+
+
+        <mat-form-field appearance="outline">
+        <input matInput color="primary" type="password" placeholder="password" [(ngModel)]="model.password" formControlName="password" required>
+      </mat-form-field>
+
+
+
+      <!-- <button mat-raised-button color="primary" [disabled]="!f.form.valid" >Register</button> -->
+
+      <button mat-raised-button color="primary">Login</button>
+</div>
+  </div>
+</form>

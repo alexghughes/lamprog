@@ -11,7 +11,7 @@ export default class UserCtrl {
   model = User;
   secret = 'tameagdeaneamhgomaith'
   register = (req,res) => {
-    console.log(req.body);
+
 
     let deferred = Q.defer();
 
@@ -35,6 +35,7 @@ export default class UserCtrl {
 
 
         obj.save((err, item) => {
+
         // 11000 is the code for duplicate key error
         if (err && err.code === 11000) {
           res.sendStatus(400);
@@ -70,7 +71,14 @@ export default class UserCtrl {
 
       let token = jwt.sign({sub: user["id"]}, this.secret);
 
-     deferred.resolve(res.send(token));
+      let body = {
+                        id: user['id'],
+                        username: user['username'],
+                        email: user['email'],
+                        token: token
+                    };
+
+     deferred.resolve(res.json(body));
 
 
     }else{

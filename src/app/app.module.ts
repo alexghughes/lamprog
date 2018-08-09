@@ -14,11 +14,23 @@ import { FaderComponent } from './fader.component';
 
 import {AngularMaterialModule} from './angular-material.module';
 
+import { UserService } from './user.service';
+
+import { RegisterComponent } from './register.component';
+
+import { LoginComponent } from './login.component';
+import { AuthGuard } from './_guards/auth.guard';
+
+import { JwtInterceptor} from './_helpers/jwt.interceptor';
+import { ErrorInterceptorProvider } from './_helpers/error.interceptor';
+
 @NgModule({
   declarations: [
     AppComponent,
     FaderComponent,
-    NojqueryComponent
+    NojqueryComponent,
+    RegisterComponent,
+    LoginComponent
 
   ],
   imports: [
@@ -27,12 +39,18 @@ import {AngularMaterialModule} from './angular-material.module';
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     AngularMaterialModule,
 
+
   ],
   providers: [
-    NounService
+    AuthGuard,
+    UserService,
+    NounService,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    ErrorInterceptorProvider,
 
   ],
   bootstrap: [AppComponent]

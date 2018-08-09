@@ -1,0 +1,54 @@
+
+  <h3>Register</h3>
+  <form name="form" class="register-form" [formGroup]="myForm" (ngSubmit)="f.form.valid && register()" #f="ngForm" novalidate>
+<div class="form-group">
+
+<div class="form-container">
+
+    <mat-form-field appearance="outline">
+    <input matInput color="primary" placeholder="username" name="username" [(ngModel)]="model.username" formControlName="username" required>
+    <mat-error>
+      Please enter a username
+    </mat-error>
+  </mat-form-field>
+
+
+    <mat-form-field appearance="outline">
+
+    <input matInput color="primary" placeholder="email" name="email" [(ngModel)]="model.email" formControlName="email"  required>
+     <mat-error *ngIf="myForm.controls.email && myForm.value.email == '' ">
+      Email is required
+
+    </mat-error>
+    <mat-error *ngIf="myForm.controls.email && myForm.value.email !== '' ">
+     Please enter a valid email address
+   </mat-error>
+  </mat-form-field>
+
+<mat-form-field appearance="outline">
+      <input matInput color="primary" type="password"  placeholder="password" name="password" [(ngModel)]="model.password" formControlName="password" required>
+      <mat-error *ngIf="myForm.controls.password && myForm.value.password == '' ">
+       Password is required
+
+     </mat-error>
+     <mat-error *ngIf="myForm.controls.password && myForm.value.password !== '' ">
+      Password must be at least 8 characters in length
+    </mat-error>
+</mat-form-field>
+
+
+
+<mat-form-field appearance="outline">
+      <input matInput color="primary" type="password" placeholder="confirmPassword" name="confirmPassword" [(ngModel)]="model.confirmPassword" formControlName="confirmPassword"  required>
+      <mat-error *ngIf="myForm.controls.confirmPassword.errors?.MatchPassword">
+        Passwords do not match
+      </mat-error>
+</mat-form-field>
+
+      <button mat-raised-button color="primary" [disabled]="!f.form.valid" >Register</button>
+      <a [routerLink]="['/dashboard']" class="btn btn-link">Cancel</a>
+
+</div>
+
+    </div>
+  </form>

@@ -3,6 +3,7 @@ import { Nouns } from './nouns';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs';
 import { map } from "rxjs/operators";
+import { first } from 'rxjs/operators';
 
 
 
@@ -30,27 +31,11 @@ export class NounService {
 
  send(noun:any): Observable<any>{
 
-// this.http.post('http://localhost:3000/api/send',
-//      {'noun': noun},
-//
-//     {
-//       headers: this.headers
-//     })
-//       .subscribe(
-//         res => {
-//           console.log(res);
-//         },
-//         err => {
-//           console.log("Error occured");
-//         }
-//       );
 
 return this.http.post('http://localhost:3000/api/send',
      {'noun': noun},
 
-    {
-      headers: this.headers
-    })
+  )
       .pipe(map(res => {return res.json()}));
 
 }

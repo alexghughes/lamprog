@@ -1,0 +1,11 @@
+.form-container {
+
+  display: block;
+  flex-direction: column;
+ margin-top: 10%;
+}
+
+.form-container > * {
+
+
+}
