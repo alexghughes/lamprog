@@ -7,7 +7,7 @@ import { first } from 'rxjs/operators';
 
 
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class NounService {
    //private json = JSON.stringify({var1: 'test'});
   private headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });

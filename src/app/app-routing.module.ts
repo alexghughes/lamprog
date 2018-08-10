@@ -5,12 +5,13 @@ import { NojqueryComponent } from './nojquery.component';
 import { RegisterComponent } from './register.component';
 import { LoginComponent } from './login.component';
 import { AuthGuard } from './_guards/auth.guard';
+import { TestInterceptor } from './_guards/test.interceptor';
 
 const routes: Routes = [
   { path: '', redirectTo: 'nojquery', pathMatch: 'full'},
   { path: 'nojquery', component: NojqueryComponent, canActivate: [AuthGuard]},
   { path: 'register', component: RegisterComponent},
-  { path: 'login', component: LoginComponent},
+  { path: 'login', component: LoginComponent, canActivate: [TestInterceptor]},
 ];
 
 @NgModule({
