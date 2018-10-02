@@ -18,14 +18,19 @@ export class UserService {
   }
 
   login(username: string, password: string){
+
     return this.http.post(this.url + '/api/users/authenticate', {username: username, password: password})
     .pipe(map(user => {
-      console.log(user);
       if(user){
+        console.log('1');
         localStorage.setItem('currentUser', user["_body"]);
       }
       return user;
     }));
+  }
+
+  isLoggedIn() {
+    return localStorage.getItem('currentUser') != null;
   }
 
 

@@ -1,6 +1,7 @@
 import { Component, AfterViewInit, ElementRef, Renderer2, ViewChild, OnInit, OnChanges } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NounService } from './noun.service';
+import { UserService } from './user.service';
 import { interval } from 'rxjs';
 import * as Rx from "rxjs";
 import { timer } from 'rxjs';
@@ -29,7 +30,12 @@ export class NojqueryComponent implements OnInit {
   tooltipsource:Subscription;
   public queue = [];
   subscription: Subscription;
-  constructor(private nounService: NounService, private rd: Renderer2, private sanitized: DomSanitizer) { }
+  currentUser: boolean;
+
+  constructor(private nounService: NounService, private rd: Renderer2, private sanitized: DomSanitizer, private userService: UserService) {
+    this.currentUser = this.userService.isLoggedIn();
+    console.log(this.currentUser);
+  }
 
 
   ngOnInit() {
@@ -165,7 +171,7 @@ export class NojqueryComponent implements OnInit {
 
       let myoffsettop = markRect.top - bodyRect.top;
       let myoffsetleft = markRect.left - bodyRect.left;
-      myoffsettop = myoffsettop - 40;
+      myoffsettop = myoffsettop - 50;
       this.top = myoffsettop;
       this.left = myoffsetleft;
       this.display = "block";

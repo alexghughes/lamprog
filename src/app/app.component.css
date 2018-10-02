@@ -27,8 +27,16 @@ nav a.active {
 }
 
 mat-toolbar {
-  background-color: #03A9F4;
+  margin-top: -1%;
+  margin-left: -1%;
+  max-height: 50%;
 
+}
+
+
+
+mat-toolbar-row {
+  justify-content: space-between;
 }
 
 span a {
@@ -48,6 +56,11 @@ span a:hover {
 img {
   margin-top: 11%;
   color:white;
+  width:70%;
+  padding-right: 30%;
+  float: left;
+  margin-left: -10%;
+
 }
 
 .router-links {

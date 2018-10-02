@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 
-import {HTTP_INTERCEPTORS } from '@angular/common/http';
+import {  HTTP_INTERCEPTORS , HttpClientModule,} from '@angular/common/http';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -21,9 +21,10 @@ import { RegisterComponent } from './register.component';
 
 import { LoginComponent } from './login.component';
 import { AuthGuard } from './_guards/auth.guard';
-import { TestInterceptor } from './_guards/test.interceptor';
-import { JwtInterceptor } from './_helpers/jwt.interceptor';
-import { ErrorInterceptorProvider } from './_helpers/error.interceptor';
+import { JwtInterceptor } from './helpers/jwt.interceptor';
+import { ErrorInterceptorProvider } from './helpers/error.interceptor';
+import { FlexLayoutModule } from "@angular/flex-layout";
+import { HomeComponent } from "./home.component";
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ErrorInterceptorProvider } from './_helpers/error.interceptor';
     FaderComponent,
     NojqueryComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    HomeComponent
 
   ],
   imports: [
@@ -39,17 +41,17 @@ import { ErrorInterceptorProvider } from './_helpers/error.interceptor';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
     HttpModule,
-
     BrowserAnimationsModule,
     AngularMaterialModule,
+    FlexLayoutModule
 
 
   ],
   providers: [
     AuthGuard,
     NounService,
-    TestInterceptor,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     UserService,
     ErrorInterceptorProvider,

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Nouns } from './nouns';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import {Headers, RequestOptions } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from "rxjs/operators";
 import { first } from 'rxjs/operators';
@@ -15,16 +16,16 @@ export class NounService {
   private options = new RequestOptions({ headers: this.headers });
   private nounsUrl = 'http://localhost:3000';
 
-  constructor(private http: Http) { }
+  constructor(private http: HttpClient) { }
 
   getNouns(): Observable<any> {
-    return this.http.get(this.nounsUrl + 'api/nouns').pipe(map(res => {res.json()}));
+    return this.http.get(this.nounsUrl + 'api/nouns').pipe(map(res => {res}));
 
     //.map(res=> res.json());
   }
 
   getNounsTest(): Observable<any> {
-    return this.http.get(this.nounsUrl + '/api/nounstest').pipe(map(res => {res.json()}));
+    return this.http.get(this.nounsUrl + '/api/nounstest').pipe(map(res => {res}));
 
   }
 
@@ -36,7 +37,7 @@ return this.http.post('http://localhost:3000/api/send',
      {'noun': noun},
 
   )
-      .pipe(map(res => {return res.json()}));
+      .pipe(map(res => {return res }));
 
 }
 

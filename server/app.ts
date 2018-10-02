@@ -58,18 +58,18 @@ class Server {
     this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(morgan('dev'));
 
-  //   this.app.use(expressJwt({
-  //   secret: 'tameagdeaneamhgomaith',
-  //   getToken: function (req) {
-  //
-  //       if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-  //           return req.headers.authorization.split(' ')[1];
-  //       } else if (req.query && req.query.token) {
-  //           return req.query.token;
-  //       }
-  //       return null;
-  //   }
-  // }).unless({ path: ['/api/users/authenticate', '/api/users/register'] }));
+    this.app.use(expressJwt({
+    secret: 'tameagdeaneamhgomaith',
+    getToken: function (req) {
+
+        if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+            return req.headers.authorization.split(' ')[1];
+        } else if (req.query && req.query.token) {
+            return req.query.token;
+        }
+        return null;
+    }
+  }).unless({ path: ['/api/users/authenticate', '/api/users/register'] }));
 
 
   }

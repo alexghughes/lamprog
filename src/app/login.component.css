@@ -1,11 +1,16 @@
 .form-container {
 
-  display: block;
+  display: flex;
   flex-direction: column;
  margin-top: 10%;
+ margin-left: 20%;
 }
 
 .form-container > * {
 
 
+}
+
+.login-error{
+  margin-bottom: 2%;
 }

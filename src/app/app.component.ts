@@ -1,33 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, DoCheck } from '@angular/core';
+import {UserService} from './user.service';
+import {Router} from '@angular/router';
 // <span><img src="./assets/lamprog3.png" alt="Lampróg" height="200" width="250"></span>
 //
 @Component({
   selector: 'my-app',
-  template: `
-
-<mat-toolbar>
-  <div id='myRoutes'>
-  <span><a routerLink="/nojquery">NoJquery</a></span>
-
-  <!--<span><a routerLink="/users">Users</a></span>
-  <span><a routerLink="/nouns">Nouns</a></span>
-  <span><a routerLink="/message">Message</a></span>-->
-  </div>
-</mat-toolbar>
-
-   <router-outlet></router-outlet>
-  <!-- This fills the remaining space of the current row -->
-
-
-
-
-
-
-  `,
+  templateUrl: 'app.component.html',
     styleUrls: ['./app.component.css'],
 })
 
-export class AppComponent {
+
+export class AppComponent implements DoCheck {
   title = 'Lampróg';
+   public currentUser: boolean;
+
+  constructor(private userService: UserService, private router: Router) {
+
+  }
+
+
+  ngDoCheck() {
+    this.currentUser = this.userService.isLoggedIn();
+
+  }
+
+
+
+
 
 }

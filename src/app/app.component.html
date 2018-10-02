@@ -1,1 +1,20 @@
 
+<div *ngIf="currentUser">
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+  <span><img src="./assets/LogoMakr_7Biski.png" alt="Lampróg"></span>
+</mat-toolbar-row>
+<mat-toolbar-row>
+  <div id='myRoutes'>
+  <!-- <span><a routerLink="/nojquery">NoJquery</a></span> -->
+
+  <!--<span><a routerLink="/users">Users</a></span>
+  <span><a routerLink="/nouns">Nouns</a></span>
+  <span><a routerLink="/message">Message</a></span>-->
+  </div>
+  </mat-toolbar-row>
+</mat-toolbar>
+</div>
+
+   <router-outlet></router-outlet>
+  <!-- This fills the remaining space of the current row -->

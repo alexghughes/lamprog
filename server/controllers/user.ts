@@ -82,7 +82,7 @@ export default class UserCtrl {
 
 
     }else{
-      deferred.resolve();
+      deferred.resolve(res.sendStatus(401));
     }
 
   })

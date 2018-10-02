@@ -2,7 +2,7 @@
 
 @include mat-core();
 
-$my-theme-primary: mat-palette($mat-blue);
+$my-theme-primary: mat-palette($mat-green, A400);
 $my-theme-accent: mat-palette($mat-teal);
 $my-theme-warn: mat-palette($mat-red);
 

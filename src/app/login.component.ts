@@ -1,7 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import {FormControl, FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
 import {UserService} from './user.service';
 import {Router, ActivatedRoute} from '@angular/router';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+
+// export interface DialogData {
+//   email: string;
+//   password: string;
+// }
 
 @Component({
   moduleId: module.id,
@@ -16,41 +22,60 @@ export class LoginComponent implements OnInit {
     password: ''
   }
 
-myForm: FormGroup;
-
-returnUrl: string;
-
-constructor (
-  private userService: UserService,
-  public formBuilder: FormBuilder,
-  private router: Router,
-  private route: ActivatedRoute
-){
-
-  this.myForm = this.formBuilder.group({
-    username: ['', Validators.compose([Validators.minLength(10), Validators.required])],
-    password: ['', Validators.compose([Validators.required])]
-  })
 
 
+  myForm: FormGroup;
 
-}
+  returnUrl: string;
 
-ngOnInit() {
- this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-}
+  error = '';
 
-login() {
-  this.userService.login(this.model.username, this.model.password)
-  .subscribe(
-    data => {
-      this.router.navigate([this.returnUrl]);
-    },
-    error =>{
-      console.log('something went wrong');
-    }
-  )
-}
+  closeDialog: boolean = false;
+
+  constructor(
+    private userService: UserService,
+    public formBuilder: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute,
+    public dialogRef: MatDialogRef<LoginComponent>,
+    //  @Inject(MAT_DIALOG_DATA) public data: DialogData
+  ) {
+
+    this.myForm = this.formBuilder.group({
+      username: ['', Validators.compose([Validators.required])],
+      password: ['', Validators.compose([Validators.required])]
+    })
+
+
+
+  }
+
+  ngOnInit() {
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+  }
+
+  login() {
+    this.userService.login(this.model.username, this.model.password)
+      .subscribe(
+      data => {
+        console.log(data);
+        this.closeDialog = true;
+        this.dialogRef.close();
+        this.router.navigate(['/nojquery']);
+      },
+
+      error => {
+        this.error = 'Username or Password is incorrect';
+        console.log(this.error);
+      }
+
+      )
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
 
 
 

@@ -1,0 +1,35 @@
+.potogold {
+  width: 50%;
+  height: 50%;
+  margin-left: 24%;
+}
+
+.splancimage {
+  width: 40%;
+  height: 60%;
+}
+
+
+.container {
+   align-items: flex-start;
+   display: flex;
+   flex-direction: row;
+ margin-right: 0%;
+}
+
+.signupbutton {
+    margin-top: 9%;
+    margin-left: 3%;
+}
+
+.loginbutton {
+    margin-top: 9%;
+    background-color: inherit;
+    margin-left: 30%;
+    color: #00e676;
+    font-size: 150%;
+    border: none;
+    font-weight: bold;
+
+
+}

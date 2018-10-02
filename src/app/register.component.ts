@@ -19,8 +19,11 @@ export class RegisterComponent {
     password: '',
     confirmPassword: ''
   };
+
   loading = false;
   myForm: FormGroup;
+
+  error = '';
 
   constructor(
     private router: Router,
@@ -42,39 +45,28 @@ export class RegisterComponent {
 
 
 
-  // emailFormControl = new FormControl('', [
-  //   Validators.required,
-  //   Validators.email
-  // ]);
-  //
-  // usernameFormControl = new FormControl('', [
-  //   Validators.required
-  // ]);
-  //
-  // passwordFormControl = new FormControl('',[Validators.required, Validators.minLength(8)]);
-  // confirmPasswordFormControl = new FormControl('',[
-  //   Validators.required,
-  //   Validators.minLength(8),
-  //
-  // ]);
-  //
-  // passwordFormControlGroup = new FormGroup({
-  //   password: this.passwordFormControl,
-  //   confirmPassword: this.confirmPasswordFormControl
-  //
-  //
-  // });
-
-
-
   register() {
 
     //this.loading = true;
-    console.log(this.model);
+
     this.userService.create(this.model)
     .subscribe(
       data => {
-        this.router.navigate(['login']);
+
+        this.userService.login(this.model.username, this.model.password)
+        .subscribe(
+        data => {
+          console.log(data);
+          this.router.navigate(['/nojquery']);
+        },
+
+        error => {
+          this.error = 'Username or Password is incorrect';
+          console.log(this.error);
+        }
+
+        )
+      //  this.router.navigate(['login']);
       },
       error => {
         this.loading = false;

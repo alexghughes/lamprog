@@ -1,23 +1,30 @@
 <form name="form" (ngSubmit)="login()" [formGroup]="myForm" #f="ngForm" novalidate>
   <div class="form-group">
-
+<div mat-dialog-actions>
 <div class="form-container">
 
         <mat-form-field appearance="outline" >
             <input matInput color="primary" placeholder="username" [(ngModel)]="model.username" formControlName="username" required>
+            <mat-error>
+              Username is required
+            </mat-error>
         </mat-form-field>
 
 
 
         <mat-form-field appearance="outline">
         <input matInput color="primary" type="password" placeholder="password" [(ngModel)]="model.password" formControlName="password" required>
+
+        <mat-error>Password is required</mat-error>
+
       </mat-form-field>
-
-
-
+      <div class="login-error">
+      <mat-error *ngIf="model.username != '' && model.password != ''">{{error}}</mat-error>
+    </div>
       <!-- <button mat-raised-button color="primary" [disabled]="!f.form.valid" >Register</button> -->
-
       <button mat-raised-button color="primary">Login</button>
+
+</div>
 </div>
   </div>
 </form>
