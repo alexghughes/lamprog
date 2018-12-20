@@ -4,7 +4,7 @@ import * as xml2js from 'xml2js';
 import * as parser from 'xml2json';
 import Noun from './models/noun';
 
-export function getMigration() {
+export default function getMigration() {
   let model = Noun;
 
   let noun = {
@@ -66,14 +66,16 @@ arr.forEach(function(a){
       }
         noun.gender = result.noun.sgNom[0].$.gender;
   // //how to push to mongodb
- let obj = new model(noun);
+ //let obj = new model(noun);
   //  obj.save((err, item) => {
   //    console.log(item);
   //    console.log(err);
   // });
   //   })
-
+console.log(noun);
   });
+
+
 
  noun = {
     default: null,

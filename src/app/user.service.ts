@@ -22,7 +22,6 @@ export class UserService {
     return this.http.post(this.url + '/api/users/authenticate', {username: username, password: password})
     .pipe(map(user => {
       if(user){
-        console.log('1');
         localStorage.setItem('currentUser', user["_body"]);
       }
       return user;

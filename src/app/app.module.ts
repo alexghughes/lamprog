@@ -25,6 +25,7 @@ import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { ErrorInterceptorProvider } from './helpers/error.interceptor';
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { HomeComponent } from "./home.component";
+import { DashboardComponent } from "./dashboard.component";
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { HomeComponent } from "./home.component";
     NojqueryComponent,
     RegisterComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    DashboardComponent
 
   ],
   imports: [

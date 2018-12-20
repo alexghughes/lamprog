@@ -61,7 +61,7 @@ export class LoginComponent implements OnInit {
         console.log(data);
         this.closeDialog = true;
         this.dialogRef.close();
-        this.router.navigate(['/nojquery']);
+        this.router.navigate(['/dashboard']);
       },
 
       error => {

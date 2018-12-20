@@ -28,8 +28,8 @@ nav a.active {
 
 mat-toolbar {
   margin-top: -1%;
-  margin-left: -1%;
-  max-height: 50%;
+
+  min-height: 100px;
 
 }
 
@@ -39,8 +39,8 @@ mat-toolbar-row {
   justify-content: space-between;
 }
 
-span a {
-  padding:40px 40px 10px 10px;
+a {
+  margin-top: 4%;
   color: white;
   font-family: sans-serif;
    font-size: 1em;
@@ -54,20 +54,11 @@ span a:hover {
 
 
 img {
-  margin-top: 11%;
+  margin-top: 5%;
   color:white;
   width:70%;
   padding-right: 30%;
   float: left;
   margin-left: -10%;
 
-}
-
-.router-links {
-  /*display: block;*/
-  margin-top: 5%;
-}
-
-#myRoutes {
-  margin-left: 5%;
 }

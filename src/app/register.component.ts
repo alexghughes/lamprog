@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from './user.service';
 import {FormControl, FormGroup, FormBuilder, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
@@ -22,13 +22,15 @@ export class RegisterComponent {
 
   loading = false;
   myForm: FormGroup;
+  pathname = '';
 
   error = '';
 
   constructor(
     private router: Router,
     private userService: UserService,
-    public formBuilder: FormBuilder
+    public formBuilder: FormBuilder,
+    private route: ActivatedRoute
   ){
 
     this.myForm = this.formBuilder.group({
@@ -42,8 +44,6 @@ export class RegisterComponent {
 
 
   }
-
-
 
   register() {
 
@@ -80,7 +80,6 @@ export class RegisterComponent {
    if(password !== confirmPassword){
      AC.get('confirmPassword').setErrors({MatchPassword: true})
    }else{
-     console.log(true);
      return null;
    }
   //  console.log(this.model.password);

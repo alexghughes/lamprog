@@ -17,14 +17,27 @@ export default class NounCtrl{
   insert = (req, res) => {
     let text = req.body.noun;
 
+    let nobreaks = text.replace(/\r?\n|\r/g, ' ');
+  //  nobreaks = nobreaks.substr(nobreaks.length/2, nobreaks.length-1);
     let returnMsg = '';
+
     let tokenizer = text.split(' ');
+
+
+  if(tokenizer.length > 5){
+     tokenizer = tokenizer.slice(Math.max(tokenizer.length - 5, 1));
+    }
+
+    //nobreaks = tokenizer.replace(/\r?\n|\r/g, ' ');
+
+
+    let nobreakstokenizer = nobreaks.split(' ');
 
     let returnObj = {};
 
-    let secondLastWord = tokenizer[tokenizer.length - 2];
+    let secondLastWord = nobreakstokenizer[nobreakstokenizer.length - 2];
 
-    let lastWord = tokenizer[tokenizer.length-1];
+    let lastWord = nobreakstokenizer[nobreakstokenizer.length-1];
 
     if (lastWord == '') {
       lastWord = secondLastWord + ' ';
@@ -32,9 +45,11 @@ export default class NounCtrl{
 
     lastWord = lastWord.toLowerCase();
 
-    this.noun.findOne({"default": lastWord}, (err, docs) => {
+
+    this.noun.findOne({"default":lastWord}, (err, docs) => {
       if (err) { return console.error(err); }
     }).then(function(result) {
+
       if(result){
 
         let dflt = result["default"];
@@ -45,6 +60,7 @@ export default class NounCtrl{
         let regex = /\b[aeiouAEIOU]/g;
         //get rid of fadas so regex can see if first word is a vowel
         let removeFadas = cleanUpSpecialChars(dflt);
+
       //  console.log(removeFadas);
         //test word to see if it begins with a vowel
         let vowelCheck = regex.test(removeFadas);
@@ -60,7 +76,7 @@ export default class NounCtrl{
           if(checkForCapital) {
             var thirdLastWord = tokenizer[tokenizer.length - 3];
             var checkthirdlastWord = thirdLastWord.replace(/['"]+/g, '');
-            if (thirdLastWord == 'an' || thirdLastWord == 'An' || thirdLastWord == '\nan') {
+            if (thirdLastWord == 'an' || thirdLastWord == 'An' || thirdLastWord == '\nan' || thirdLastWord === 'an\nan') {
 
               tokenizer[tokenizer.length - 2] = 't' + tokenizer[tokenizer.length - 2];
               returnMsg = tokenizer.pop();
@@ -72,19 +88,38 @@ export default class NounCtrl{
 
               let rule = 'masc-noun-vowel';
               let returnObj = { 'text': returnMsg, 'rule': rule };
+
               res.json(returnObj);
             }
           }else {
+
+            //clear all whitespaces and gaps
+            let cleanSpaces = nobreakstokenizer.filter(Boolean);
+
+            let compareWord = cleanSpaces[cleanSpaces.length - 2];
+
             var thirdLastWord = tokenizer[tokenizer.length - 3];
+
             var checkthirdlastWord = thirdLastWord.replace(/['"]+/g, '');
-            var stripLineBreaks = thirdLastWord.replace(/(?:\r\n|\r|\n)/g, '');
 
-            if (thirdLastWord == 'an'  || thirdLastWord == 'An' || stripLineBreaks == 'an') {
+            if (compareWord == 'an'  || compareWord == 'An' || compareWord == 'an') {
 
-              tokenizer[tokenizer.length - 2] = 't-' + tokenizer[tokenizer.length - 2];
-              returnMsg = tokenizer.pop();
+              let stringify = JSON.stringify(tokenizer[tokenizer.length-2]);
+
+              //if there is a linebreak
+              if(stringify.indexOf('\\') > -1){
+              let splitword = stringify.split('\\');
+              let deletefirstn = splitword[1].substring(1, splitword[1].length - 1);
+
+
+              tokenizer[tokenizer.length - 1] = 't-' + deletefirstn;
+              tokenizer[tokenizer.length - 2] = splitword[0].substring(1);
+
+
+              //returnMsg = tokenizer.pop();
               returnMsg = tokenizer.join(' ');
               returnMsg = returnMsg.replace(/['"]+/g, '');
+              console.log(returnMsg);
 
               returnMsg = returnMsg.substring(returnMsg.lastIndexOf(' '));
               returnMsg = returnMsg.substr(1);
@@ -92,9 +127,30 @@ export default class NounCtrl{
               let rule = 'masc-noun-vowel';
               let returnObj = { 'text': returnMsg, 'rule': rule };
               //socket.emit('returnmessage', returnObj);
+
+              res.json(returnObj);
+            }else{
+              tokenizer[tokenizer.length - 2] = 't-' + tokenizer[tokenizer.length - 2];
+
+              returnMsg = tokenizer.pop();
+              returnMsg = tokenizer.join(' ');
+              returnMsg = returnMsg.replace(/['"]+/g, '');
+              console.log(returnMsg);
+              returnMsg = returnMsg.substring(returnMsg.lastIndexOf(' '));
+              returnMsg = returnMsg.substr(1);
+
+              let rule = 'masc-noun-vowel';
+
+              let returnObj = { 'text': returnMsg, 'rule': rule };
+              //socket.emit('returnmessage', returnObj);
+
               res.json(returnObj);
             }
+            }
           }
+
+        }else{
+          res.json('nothing');
         }
 
     }else{

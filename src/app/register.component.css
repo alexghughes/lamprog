@@ -8,8 +8,22 @@
 
   display: flex;
   flex-direction: column;
- margin-top: 10%;
+ margin-top: 5%;
+
+
 }
+
+.register-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+button {
+  width: 40%;
+}
+
+
 
 .form-container > * {
   width: 100%;
@@ -25,4 +39,8 @@
   /* margin-left: 50%; */
 
   float: center;
+}
+
+.splancimage {
+  width: 20%;
 }

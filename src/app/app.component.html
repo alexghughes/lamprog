@@ -1,17 +1,16 @@
-
-<div *ngIf="currentUser">
+  {{pathname}}
+<div *ngIf="currentUser && router.url != '/register' && router.url != '/home'">
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-  <span><img src="./assets/LogoMakr_7Biski.png" alt="Lampróg"></span>
-</mat-toolbar-row>
-<mat-toolbar-row>
-  <div id='myRoutes'>
-  <!-- <span><a routerLink="/nojquery">NoJquery</a></span> -->
+  <span><img src="./assets/LogoMakr_7Biski.png" alt="Splanc!"></span>
+
+
+<a routerLink="/nojquery"><img src="./assets/ic_assignment_black_48px.svg" alt="Lampróg" height="30" width="100"></a>
 
   <!--<span><a routerLink="/users">Users</a></span>
   <span><a routerLink="/nouns">Nouns</a></span>
   <span><a routerLink="/message">Message</a></span>-->
-  </div>
+
   </mat-toolbar-row>
 </mat-toolbar>
 </div>

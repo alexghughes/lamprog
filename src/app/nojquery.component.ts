@@ -1,14 +1,14 @@
-import { Component, AfterViewInit, ElementRef, Renderer2, ViewChild, OnInit, OnChanges } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, Renderer2, ViewChild, OnInit, OnChanges, DoCheck } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NounService } from './noun.service';
 import { UserService } from './user.service';
 import { interval } from 'rxjs';
-import * as Rx from "rxjs";
+import * as Rx  from "rxjs";
 import { timer } from 'rxjs';
-
+import $ from 'jquery';
 import { Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
+//import $ from 'jquery';
 import {FormControl, FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
 
 @Component({
@@ -18,7 +18,7 @@ import {FormControl, FormBuilder, FormGroup, NgForm, Validators} from '@angular/
 
 })
 
-export class NojqueryComponent implements OnInit {
+export class NojqueryComponent implements OnInit, DoCheck {
 
   text: string;
   highlightText: any;
@@ -26,11 +26,13 @@ export class NojqueryComponent implements OnInit {
   public top: Number;
   public left: Number;
   public display: string;
-  count:number;
-  tooltipsource:Subscription;
+  count: number;
+  tooltipsource: Subscription;
   public queue = [];
   subscription: Subscription;
   currentUser: boolean;
+  variableno = '0px';
+  textAreasList: any = [];
 
   constructor(private nounService: NounService, private rd: Renderer2, private sanitized: DomSanitizer, private userService: UserService) {
     this.currentUser = this.userService.isLoggedIn();
@@ -40,34 +42,94 @@ export class NojqueryComponent implements OnInit {
 
   ngOnInit() {
 
- //const source = interval(1000);
- //const example = source.subscribe(t=>  console.log(t));
- //const example2 = example.pipe(takeUntil(this.timer));
-  //let timer = Observable.timer(2000,1000);
+    // const source = interval(1000);
+    // const example = source.subscribe(t=>  console.log(t));
+    // const example2 = example.pipe(takeUntil(this.timer));
+    // let timer = Observable.timer(2000,1000);
+  }
+
+  addTextarea(){
+
+    let boo = 'text_area'+ (this.textAreasList.length + 1);
+    this.textAreasList.push('text_area'+ (this.textAreasList.length + 1));
+    let textAreaItem = document.getElementsByName('text_area'+ (this.textAreasList.length + 1));
+    console.log(textAreaItem);
+    //this.textAreasList[this.textAreasList.length - 1].style.marginTop = '400px';
+  }
+
+  ngDoCheck() {
+    let textArea = <HTMLInputElement>document.getElementById('txtarea');
+    console.log(textArea.clientHeight);
+    console.log(textArea.scrollHeight);
+    if(textArea.clientHeight < textArea.scrollHeight - 2){
+
+    //  console.log("herroooo");
+    }
+
+
+    let lineNo = textArea.value.substr(0, textArea.selectionStart).split("\n").length;
+     this.variableno = '600%';
+
+    if (lineNo < 18) {
+      this.variableno = '600%';
+    } else if (lineNo > 18) {
+
+      this.variableno = '1200%';
+    }
+
+
+
+    // var scrollTop = $textarea.scrollTop();
+    //     $backdrop.scrollTop(scrollTop);
+    //
+    //
+    //     var scrollLeft = $textarea.scrollLeft();
+    //     $backdrop.scrollLeft(scrollLeft);
+
+    //    this.getMarkElementRect();
   }
 
 
   sendMessage(event): void {
 
     this.nounService.send(this.text).subscribe(
-       data => this.getResponse(data)
+      data => this.getResponse(data)
     )
   }
 
   onKeydown(event) {
+
     if (event.key === "Backspace") {
-        this.highlightText = '';
-        this.display = "none";
+      this.highlightText = '';
+      this.display = "none";
+    }
+
+    if (event.key != 'Enter') {
+
+      let textArea = <HTMLInputElement>document.getElementById('txtarea');
+
+      let backDrop = <HTMLInputElement>document.getElementById('backdrop');
+      //textArea.value.getBoundingClientRect();
+      backDrop.scrollTop = textArea.scrollTop;
+      backDrop.scrollLeft = textArea.scrollLeft;
+
+      //  console.log('here');
+      //    var $textarea = $('textarea');
+      //    var $backdrop = $('.backdrop');
+
+
     }
   }
+
+
 
   getResponse(data): void {
 
-    if(this.subscription !== undefined){
-    if(this.subscription.closed === false){
-      this.subscription.unsubscribe();
+    if (this.subscription !== undefined) {
+      if (this.subscription.closed === false) {
+        this.subscription.unsubscribe();
+      }
     }
-  }
     if (data.text !== 'okay' && data.text !== undefined) {
 
       this.count = 0;
@@ -76,12 +138,19 @@ export class NojqueryComponent implements OnInit {
       let changedWord = data.text;
 
       this.text = this.text.slice(0, -1);
+      let checkforlinebreak = JSON.stringify(this.text.substring(this.text.lastIndexOf(" ")));
+      if (checkforlinebreak.includes('\\n')) {
+        this.text = this.text.substring(0, this.text.lastIndexOf('\n'));
+        console.log(this.text);
+        this.text = this.text + "\n" + changedWord + ' ';
 
-      var lastIndex = this.text.lastIndexOf(" ");
-      this.text = this.text.substring(0, lastIndex);
-      this.text = this.text + " " + changedWord;
-      this.text = this.text + " ";
+      } else {
+        var lastIndex = this.text.lastIndexOf(" ");
+        this.text = this.text.substring(0, lastIndex);
 
+        this.text = this.text + " " + changedWord;
+        this.text = this.text + " ";
+      }
       //if word with fada returns with first vowel appended on and we need to remove that
 
       if (changedWord.charAt(0) !== 't') {
@@ -97,34 +166,33 @@ export class NojqueryComponent implements OnInit {
       let backSpaceEvent = false;
       let revMark = reverse('<mark id="marky" style="background-color:#FBFF2C; border-radius: 8px; ">&$</mark>');
       this.sanitized.bypassSecurityTrustHtml(this.highlightText);
-      console.log(this.sanitized);
+
       this.highlightText = applyHighlights(this.text, changedWord, revMark);
-      console.log(this.highlightText);
+
       this.isVisible = true;
       let marky = <HTMLInputElement>document.getElementById('marky');
 
       this.getMarkElementRect();
 
 
-  let sourcething = timer(
-    1000, /* 5 seconds */
-    1000 /* 1 second */
-     );
+      let sourcething = timer(
+        1000, /* 5 seconds */
+        1000 /* 1 second */
+      );
 
       let y = 0;
-  this.subscription = sourcething.subscribe(x=>
-  {
+      this.subscription = sourcething.subscribe(x => {
 
-      if(x == 1){
-        this.isVisible = false;
-      }
+        if (x == 1) {
+          this.isVisible = false;
+        }
 
-      if(x == 4){
-        this.display = "none";
+        if (x == 4) {
+          this.display = "none";
 
-        this.subscription.unsubscribe();
-      }
-    });
+          this.subscription.unsubscribe();
+        }
+      });
 
     }
 
@@ -152,7 +220,7 @@ export class NojqueryComponent implements OnInit {
       return rev;
     }
 
-    function returnMarkElement(){
+    function returnMarkElement() {
 
 
     }
@@ -160,13 +228,13 @@ export class NojqueryComponent implements OnInit {
 
 
   getMarkElementRect(): void {
-    setTimeout( () => {
+    setTimeout(() => {
 
       let mymark = document.getElementsByTagName('MARK');
 
       console.log(mymark);
       let markRect = mymark[0].getBoundingClientRect();
-
+      console.log(markRect);
       let bodyRect = document.body.getBoundingClientRect();
 
       let myoffsettop = markRect.top - bodyRect.top;

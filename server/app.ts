@@ -10,7 +10,7 @@ import * as socketIo from 'socket.io';
 import * as expressJwt from 'express-jwt';
 
 import setRoutes from './routes';
-
+import getMigration from './migration';
 import { Message } from './models';
 
 import { SocketClass } from './controllers';
@@ -113,6 +113,7 @@ class Server {
 
   private setRoutes(): void {
    setRoutes(this.app);
+   //getMigration();
   }
 
 
