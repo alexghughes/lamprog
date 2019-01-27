@@ -135,7 +135,7 @@ export default class NounCtrl{
               returnMsg = tokenizer.pop();
               returnMsg = tokenizer.join(' ');
               returnMsg = returnMsg.replace(/['"]+/g, '');
-              console.log(returnMsg);
+
               returnMsg = returnMsg.substring(returnMsg.lastIndexOf(' '));
               returnMsg = returnMsg.substr(1);
 
@@ -149,8 +149,72 @@ export default class NounCtrl{
             }
           }
 
-        }else{
-          res.json('nothing');
+        }else if (dflt == lastWord && !vowelCheck && gender === 'fem') {
+          secondLastWord = cleanUpSpecialChars(secondLastWord);
+          //if gender is female bitchasd
+
+            //var firstLetter = tokenizer.charAt(0);
+console.log(result['default'].charAt(0));
+            //if gender is female bitchasd
+
+            if(result['default'].charAt(0) !== 's' && result['default'].charAt(0) !== 'S'){
+              let cleanSpaces = nobreakstokenizer.filter(Boolean);
+
+              let compareWord = cleanSpaces[cleanSpaces.length - 2];
+
+              var thirdLastWord = tokenizer[tokenizer.length - 3];
+              var checkthirdlastWord = thirdLastWord.replace(/['"]+/g, '');
+
+              if (compareWord == 'an' || compareWord == 'An' || compareWord == '\nan' || compareWord === 'an\nan') {
+
+                tokenizer[tokenizer.length - 2] = [tokenizer[tokenizer.length - 2].slice(0, 1), 'h', tokenizer[tokenizer.length - 2].slice(1)].join('');
+
+                returnMsg = tokenizer.pop();
+                returnMsg = tokenizer.join(' ');
+                returnMsg = returnMsg.replace(/['"]+/g, '');
+
+                returnMsg = returnMsg.substring(returnMsg.lastIndexOf(' '));
+                returnMsg = returnMsg.substr(1);
+
+                let rule = 'female-noun-vowel';
+                console.log(returnMsg);
+                let returnObj = { 'text': returnMsg, 'rule': rule };
+
+                res.json(returnObj);
+            }
+
+          }else if(result['default'].charAt(0) == 's' || result['default'].charAt(0) == 'S'){
+
+            let cleanSpaces = nobreakstokenizer.filter(Boolean);
+
+            let compareWord = cleanSpaces[cleanSpaces.length - 2];
+
+            var thirdLastWord = tokenizer[tokenizer.length - 3];
+            var checkthirdlastWord = thirdLastWord.replace(/['"]+/g, '');
+
+            if (compareWord == 'an' || compareWord == 'An' || compareWord == '\nan' || compareWord === 'an\nan') {
+              tokenizer[tokenizer.length - 2] = 't' + [tokenizer[tokenizer.length - 2];
+
+              returnMsg = tokenizer.pop();
+              returnMsg = tokenizer.join(' ');
+              returnMsg = returnMsg.replace(/['"]+/g, '');
+
+              returnMsg = returnMsg.substring(returnMsg.lastIndexOf(' '));
+              returnMsg = returnMsg.substr(1);
+
+              let rule = 'female-noun-vowel';
+              console.log(returnMsg);
+              let returnObj = { 'text': returnMsg, 'rule': rule };
+              res.json(returnObj);
+            }else{
+              res.json('nothing');
+            }
+
+          }else{
+            res.json("nothing");
+          }
+
+
         }
 
     }else{

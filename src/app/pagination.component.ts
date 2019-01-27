@@ -10,20 +10,23 @@ import { Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 //import $ from 'jquery';
 import {FormControl, FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
+//import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document/build/ckeditor';
 
 @Component({
-  selector: 'nojquery-component',
-  templateUrl: './nojquery.component.html',
-  styleUrls: ['./nojquery.component.css']
+  selector: 'pagination-component',
+  templateUrl: './pagination.component.html',
+  styleUrls: ['./pagination.component.css']
 
 })
 
-export class NojqueryComponent implements OnInit, DoCheck {
+export class PaginationComponent implements OnInit, DoCheck {
 
   text: string;
+  textList: any = [];
   highlightText: any;
   isVisible: boolean = false;
   public top: Number;
+  public textAreaTop: any = [];
   public left: Number;
   public display: string;
   count: number;
@@ -31,10 +34,11 @@ export class NojqueryComponent implements OnInit, DoCheck {
   public queue = [];
   subscription: Subscription;
   currentUser: boolean;
-  variableno = 100;
+  variableno = '0px';
   textAreasList: any = [];
-  dividers: any = [];
-  hrpos: any;
+  backDropList: any = [];
+  textArea: any;
+  counter  = 0;
 
   constructor(private nounService: NounService, private rd: Renderer2, private sanitized: DomSanitizer, private userService: UserService) {
     this.currentUser = this.userService.isLoggedIn();
@@ -42,49 +46,83 @@ export class NojqueryComponent implements OnInit, DoCheck {
 
 
   ngOnInit() {
+    this.textAreasList.push('text_area'+ (this.textAreasList.length + 1));
+    this.backDropList.push('back_drop'+ (this.backDropList.length + 1));
 
-    // const source = interval(1000);
-    // const example = source.subscribe(t=>  console.log(t));
-    // const example2 = example.pipe(takeUntil(this.timer));
-    // let timer = Observable.timer(2000,1000);
-
-    this.variableno = 100;
   }
 
   addTextarea(){
-
-    let boo = 'text_area'+ (this.textAreasList.length + 1);
+    this.counter++;
     this.textAreasList.push('text_area'+ (this.textAreasList.length + 1));
-    let textAreaItem = document.getElementsByName('text_area'+ (this.textAreasList.length + 1));
+    this.backDropList.push('back_drop'+ (this.backDropList.length + 1));
+    let textAreaBefore = null, textAreaI = null, backDropBefore = null, backDropI = null;
 
-    //this.textAreasList[this.textAreasList.length - 1].style.marginTop = '400px';
-  }
 
-  ngDoCheck() {
-    let textArea = <HTMLInputElement>document.getElementById('txtarea');
+    if(this.textAreasList.length > 2 && this.backDropList.length > 2){
+      textAreaBefore = <HTMLInputElement>document.getElementById('textAreasItem'+(this.textAreasList.length-3));
+      textAreaI = <HTMLInputElement>document.getElementById('textAreasItem'+(this.textAreasList.length-2));
 
-    if(textArea.clientHeight < textArea.scrollHeight - 2){
-      let textArea = document.getElementById('txtarea');
-      let getBoundingClientRect = textArea.getBoundingClientRect();
-      let getBottom = getBoundingClientRect.bottom;
-      this.hrpos = getBottom;
-      this.variableno = this.variableno + 100;
-      this.dividers.push("hr"+ (this.dividers.length + 1));
+      backDropBefore = <HTMLInputElement>document.getElementById('backDropItem'+(this.backDropList.length-3));
+      backDropI = <HTMLInputElement>document.getElementById('backDropItem'+(this.backDropList.length-2));
+    }else{
 
+      textAreaBefore = <HTMLInputElement>document.getElementById('textAreasItem0');
+      backDropBefore = <HTMLInputElement>document.getElementById('backDropItem0');
 
     }
 
 
-    let lineNo = textArea.value.substr(0, textArea.selectionStart).split("\n").length;
+    if(textAreaBefore !== null && textAreaI !== null){
 
-    // this.variableno = '100';
+    let textRect = textAreaI.getBoundingClientRect();
 
-    // if (lineNo < 6) {
-    //   this.variableno = 100;
-    // } else if (lineNo > 6) {
-    //
-    //   this.variableno = 200;
-    // }
+    let textAreaBeforeRect = textAreaBefore.getBoundingClientRect();
+
+    let myoffsettop = textRect.top + 200;
+    this.textAreaTop[this.counter] = myoffsettop;
+
+
+  }else{
+    let textAreaBeforeRect = textAreaBefore.getBoundingClientRect();
+    let myoffsettop = textAreaBeforeRect.top + 200;
+    this.textAreaTop[this.counter] = myoffsettop;
+
+  }
+
+
+  }
+
+  ngDoCheck() {
+    let focused  = document.activeElement;
+    let index;
+    if(focused.id){
+      index = focused.id.slice(-1);
+    }
+
+    this.text = this.textList[index];
+
+  //let textAreaItem = <HTMLInputElement>document.getElementById('textAreasList'+(this.textAreasList.length));
+  //this.textArea = <HTMLInputElement>document.getElementById('textAreasItem'+0);
+  //console.log(this.textArea);
+
+
+  //  let textArea = <HTMLInputElement>document.getElementById('txtarea');
+  //  console.log(textArea.clientHeight);
+  //  console.log(textArea.scrollHeight);
+  //  if(textArea.clientHeight < textArea.scrollHeight - 2){
+
+  //  }
+
+
+  //  let lineNo = textArea.value.substr(0, textArea.selectionStart).split("\n").length;
+  //   this.variableno = '600%';
+
+  //  if (lineNo < 18) {
+  //    this.variableno = '600%';
+  //  } else if (lineNo > 18) {
+
+  //    this.variableno = '1200%';
+  //  }
 
 
 
@@ -101,9 +139,14 @@ export class NojqueryComponent implements OnInit, DoCheck {
 
   sendMessage(event): void {
 
-    this.nounService.send(this.text).subscribe(
-      data => this.getResponse(data)
-    )
+    if(this.text){
+
+      this.nounService.send(this.text).subscribe(
+
+        data => this.getResponse(data)
+      )
+    }
+
   }
 
   onKeydown(event) {
@@ -115,10 +158,10 @@ export class NojqueryComponent implements OnInit, DoCheck {
 
     if (event.key != 'Enter') {
 
-      let textArea = <HTMLInputElement>document.getElementById('txtarea');
+      let textArea = this.textArea;
 
       let backDrop = <HTMLInputElement>document.getElementById('backdrop');
-      //textArea.value.getBoundingClientRect();
+      console.log('here');
       backDrop.scrollTop = textArea.scrollTop;
       backDrop.scrollLeft = textArea.scrollLeft;
 
@@ -137,7 +180,7 @@ export class NojqueryComponent implements OnInit, DoCheck {
     if (data.text !== 'okay' && data.text !== undefined) {
 
       this.count = 0;
-      console.log(data);
+
       this.display = 'none';
       let changedWord = data.text;
 
@@ -157,13 +200,24 @@ export class NojqueryComponent implements OnInit, DoCheck {
       }
       //if word with fada returns with first vowel appended on and we need to remove that
 
-      if (changedWord.charAt(0) !== 't'  && data.rule == 'masc-noun-vowel') {
+      if (changedWord.charAt(0) !== 't') {
         this.text = this.text.substr(0, this.text.lastIndexOf(changedWord));
       }
 
-      let textArea = <HTMLInputElement>document.getElementById('txtarea');
+      this.textArea = <HTMLInputElement>document.getElementById('textAreasItem'+(this.textAreasList.length-2));
 
-      let textAreaValue = textArea.value.substring(textArea.value.lastIndexOf(" ") + 1);
+
+      if(this.textAreasList.length > 2 && this.backDropList.length > 2){
+
+        this.textArea = <HTMLInputElement>document.getElementById('textAreasItem'+(this.textAreasList.length-2));
+
+
+      }else{
+
+        this.textArea = <HTMLInputElement>document.getElementById('textAreasItem0');
+
+      }
+      let textAreaValue = this.textArea.value.substring(this.textArea.value.lastIndexOf(" ") + 1);
 
       let spanElmt = <HTMLInputElement>document.getElementById('span');
       let highlights = <HTMLInputElement>document.getElementById('highlights');
@@ -235,6 +289,7 @@ export class NojqueryComponent implements OnInit, DoCheck {
     setTimeout(() => {
 
       let mymark = document.getElementsByTagName('MARK');
+
 
       let markRect = mymark[0].getBoundingClientRect();
 

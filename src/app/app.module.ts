@@ -10,7 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NounService } from './noun.service';
 import { NojqueryComponent } from './nojquery.component'
 import { AppRoutingModule }     from './app-routing.module';
-
+import { PaginationComponent } from './pagination.component';
 import { FaderComponent } from './fader.component';
 
 import {AngularMaterialModule} from './angular-material.module';
@@ -26,12 +26,14 @@ import { ErrorInterceptorProvider } from './helpers/error.interceptor';
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { HomeComponent } from "./home.component";
 import { DashboardComponent } from "./dashboard.component";
+//import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 @NgModule({
   declarations: [
     AppComponent,
     FaderComponent,
     NojqueryComponent,
+    PaginationComponent,
     RegisterComponent,
     LoginComponent,
     HomeComponent,
@@ -47,7 +49,8 @@ import { DashboardComponent } from "./dashboard.component";
     HttpModule,
     BrowserAnimationsModule,
     AngularMaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+  //  CKEditorModule
 
 
   ],
