@@ -14,6 +14,7 @@ export default class NounCtrl{
     })
   }
 
+
   insert = (req, res) => {
     let text = req.body.noun;
 

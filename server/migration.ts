@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import * as fs from 'graceful-fs';
 import * as path from 'path';
 import * as xml2js from 'xml2js';
 import * as parser from 'xml2json';
@@ -20,13 +20,14 @@ export default function getMigration() {
     plNom: String,
     plGen: String,
   };
-
-  let myPath = '/Users/Alex/Documents/cloichean/server/';
-  let myPath2 = '/Users/Alex/Downloads/';
+    let myPath = 'C:/Users/alexg/Documents/Development/lamprog/server/';
+    let myPath2 = 'C:/Users/alexg/Downloads/'
+//  let myPath = '/Users/Alex/Documents/cloichean/server/';
+//  let myPath2 = '/Users/Alex/Downloads/';
 //  let filer = fs.readFileSync('../server/models/rule.ts', 'utf8');
    let arr = [];
 
-fs.readdirSync(myPath2 + 'bunamo/noun').forEach(file =>{
+fs.readdirSync(myPath2 + 'BuNaMo-master/BuNaMo-master/noun').forEach(file => {
 
    arr.push(file);
 
@@ -35,8 +36,9 @@ fs.readdirSync(myPath2 + 'bunamo/noun').forEach(file =>{
 var count = 0;
 arr.forEach(function(a){
 
-  fs.readFile(myPath2 + 'bunamo/noun/' + a, 'utf8', function(err,data){
- // console.log(data);
+  fs.readFile(myPath2 + 'BuNaMo-master/BuNaMo-master/noun/' + a, 'utf8', function(err,data){
+    console.log(data);
+    console.log(err);
  // console.log('****');
     let parseString = xml2js.parseString;
     let xml = data;
@@ -66,12 +68,12 @@ arr.forEach(function(a){
       }
         noun.gender = result.noun.sgNom[0].$.gender;
   // //how to push to mongodb
- //let obj = new model(noun);
-  //  obj.save((err, item) => {
-  //    console.log(item);
-  //    console.log(err);
-  // });
-  //   })
+ let obj = new model(noun);
+   obj.save((err, item) => {
+     console.log(item);
+     console.log(err);
+  });
+    })
 console.log(noun);
   });
 
