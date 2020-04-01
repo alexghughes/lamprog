@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {User} from './user';
+
 @Component({
   selector: 'dashboard-component',
   templateUrl: 'dashboard.component.html',

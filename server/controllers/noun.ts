@@ -6,6 +6,7 @@ export default class NounCtrl{
   model = Noun;
   noun = Noun;
   text: String;
+  objectarray: any = [];
 
   getAll = (req, res) => {
     this.model.find({}, (err, docs) => {
@@ -29,13 +30,11 @@ export default class NounCtrl{
      tokenizer = tokenizer.slice(Math.max(tokenizer.length - 5, 1));
     }
 
-    //nobreaks = tokenizer.replace(/\r?\n|\r/g, ' ');
-
-
     let nobreakstokenizer = nobreaks.split(' ');
 
     let returnObj = {};
 
+    let thrdlstwrd = nobreakstokenizer[nobreakstokenizer.length - 3];
     let secondLastWord = nobreakstokenizer[nobreakstokenizer.length - 2];
 
     let lastWord = nobreakstokenizer[nobreakstokenizer.length-1];
@@ -46,10 +45,21 @@ export default class NounCtrl{
 
     lastWord = lastWord.toLowerCase();
 
+    if(lastWord.charAt(lastWord.length - 2 == ',')) {
+      lastWord = lastWord.replace(',', '');
+    }
 
     this.noun.findOne({"default":lastWord}, (err, docs) => {
       if (err) { return console.error(err); }
     }).then(function(result) {
+
+      this.objectarray.push({
+        'lastWord': lastWord,
+        'type': 'noun'
+      });
+
+      console.log(this.objectarray);
+
 
       if(result){
 
@@ -62,7 +72,6 @@ export default class NounCtrl{
         //get rid of fadas so regex can see if first word is a vowel
         let removeFadas = cleanUpSpecialChars(dflt);
 
-      //  console.log(removeFadas);
         //test word to see if it begins with a vowel
         let vowelCheck = regex.test(removeFadas);
            /*execute when found word matches last typed word,
@@ -76,6 +85,7 @@ export default class NounCtrl{
 
           if(checkForCapital) {
             var thirdLastWord = tokenizer[tokenizer.length - 3];
+
             var checkthirdlastWord = thirdLastWord.replace(/['"]+/g, '');
             if (thirdLastWord == 'an' || thirdLastWord == 'An' || thirdLastWord == '\nan' || thirdLastWord === 'an\nan') {
 
@@ -136,7 +146,7 @@ export default class NounCtrl{
               returnMsg = tokenizer.pop();
               returnMsg = tokenizer.join(' ');
               returnMsg = returnMsg.replace(/['"]+/g, '');
-              console.log(returnMsg);
+
               returnMsg = returnMsg.substring(returnMsg.lastIndexOf(' '));
               returnMsg = returnMsg.substr(1);
 
@@ -150,8 +160,72 @@ export default class NounCtrl{
             }
           }
 
-        }else{
-          res.json('nothing');
+        }else if (dflt == lastWord && !vowelCheck && gender === 'fem') {
+          secondLastWord = cleanUpSpecialChars(secondLastWord);
+          //if gender is female bitchasd
+
+            //var firstLetter = tokenizer.charAt(0);
+console.log(result['default'].charAt(0));
+            //if gender is female bitchasd
+
+            if(result['default'].charAt(0) !== 's' && result['default'].charAt(0) !== 'S'){
+              let cleanSpaces = nobreakstokenizer.filter(Boolean);
+
+              let compareWord = cleanSpaces[cleanSpaces.length - 2];
+
+              var thirdLastWord = tokenizer[tokenizer.length - 3];
+              var checkthirdlastWord = thirdLastWord.replace(/['"]+/g, '');
+
+              if (compareWord == 'an' || compareWord == 'An' || compareWord == '\nan' || compareWord === 'an\nan') {
+
+                tokenizer[tokenizer.length - 2] = [tokenizer[tokenizer.length - 2].slice(0, 1), 'h', tokenizer[tokenizer.length - 2].slice(1)].join('');
+
+                returnMsg = tokenizer.pop();
+                returnMsg = tokenizer.join(' ');
+                returnMsg = returnMsg.replace(/['"]+/g, '');
+
+                returnMsg = returnMsg.substring(returnMsg.lastIndexOf(' '));
+                returnMsg = returnMsg.substr(1);
+
+                let rule = 'female-noun-vowel';
+                console.log(returnMsg);
+                let returnObj = { 'text': returnMsg, 'rule': rule };
+
+                res.json(returnObj);
+            }
+
+          }else if(result['default'].charAt(0) == 's' || result['default'].charAt(0) == 'S'){
+
+            let cleanSpaces = nobreakstokenizer.filter(Boolean);
+
+            let compareWord = cleanSpaces[cleanSpaces.length - 2];
+
+            var thirdLastWord = tokenizer[tokenizer.length - 3];
+            var checkthirdlastWord = thirdLastWord.replace(/['"]+/g, '');
+
+            if (compareWord == 'an' || compareWord == 'An' || compareWord == '\nan' || compareWord === 'an\nan') {
+              tokenizer[tokenizer.length - 2] = 't' + [tokenizer[tokenizer.length - 2];
+
+              returnMsg = tokenizer.pop();
+              returnMsg = tokenizer.join(' ');
+              returnMsg = returnMsg.replace(/['"]+/g, '');
+
+              returnMsg = returnMsg.substring(returnMsg.lastIndexOf(' '));
+              returnMsg = returnMsg.substr(1);
+
+              let rule = 'female-noun-vowel';
+              console.log(returnMsg);
+              let returnObj = { 'text': returnMsg, 'rule': rule };
+              res.json(returnObj);
+            }else{
+              res.json('nothing');
+            }
+
+          }else{
+            res.json("nothing");
+          }
+
+
         }
 
     }else{

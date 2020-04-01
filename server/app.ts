@@ -81,7 +81,7 @@ class Server {
 
   private mongoConnect(): void {
     this.dotenv = dotenv;
-    this.dotenv.load({ path: '.env' });
+    this.dotenv.config({ path: '.env' });
     mongoose.connect('mongodb://localhost:27017/bunamo', { useNewUrlParser: true  });
     const db = mongoose.connection;
     (<any>mongoose).Promise = global.Promise;
@@ -113,7 +113,7 @@ class Server {
 
   private setRoutes(): void {
    setRoutes(this.app);
-   getMigration();
+   //getMigration();
   }
 
 

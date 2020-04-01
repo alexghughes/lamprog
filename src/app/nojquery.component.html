@@ -1,19 +1,20 @@
-<button (click)="addTextarea()">Add TextArea</button>
+
 <div class="container">
 
 
-  <div class="backdrop" id="backdrop">
+  <div class="backdrop" id="backdrop" [style.height.%]='variableno'>
     <my-fader [isVisible]="isVisible">
       <div [innerHTML]="highlightText" class="highlights"></div>
     </my-fader>
   </div>
 
 
-<textarea spellcheck="false" id="txtarea" (keydown)="onKeydown($event)" [(ngModel)]="text" (ngModelChange)="sendMessage($)" class="user-input"></textarea>
-
+<textarea spellcheck="false" [style.height.%]='variableno' id="txtarea" (keydown)="onKeydown($event)" [(ngModel)]="text" (ngModelChange)="sendMessage($)" class="user-input"></textarea>
 
 </div>
 
-
-
 <div id="append" [style.top.px]="top" [style.left.px]="left" [style.display]="display"><pre>Why?</pre></div>
+
+<!-- <div *ngFor="let hr of dividers; let hr_index = index">
+<div class="page-break" [style.top.px]="hrpos" style="z-index: 2000; position: absolute; margin-left: 20"></div>
+</div> -->

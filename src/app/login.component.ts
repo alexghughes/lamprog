@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import {FormControl, FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
 import {UserService} from './user.service';
 import {Router, ActivatedRoute} from '@angular/router';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 // export interface DialogData {
 //   email: string;
