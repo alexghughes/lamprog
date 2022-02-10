@@ -43,7 +43,7 @@
     "mongodb": "^3.5.5",
     "mongoose": "^5.9.6",
     "morgan": "^1.10.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "rxjs": "^6.5.4",
     "tether": "^1.4.7",
     "zone.js": "^0.10.3"
